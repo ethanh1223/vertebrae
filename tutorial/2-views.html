@@ -26,16 +26,28 @@ var Comment = Backbone.Model.extend({
   initialize: function(message) {
     /* Set the initial values for `votes` to 0 and `message` to the message.
      * Remember to use setters when working with attributes! */
+     this.set('votes', 0);
+     this.set('message', message);
   },
   votes: function() {
     /* Return the votes attribute on this model.
      * Remember to use a getter when working with attributes! */
+     return this.get('votes');
   },
   upvote: function(){
     // Set the `votes` attribute to the current vote count plus one.
-  }
+    this.set('votes', this.get('votes') + 1);
+  },
   // Add a downvote function; don't forget the comma above.
+  downvote: function(){
+    this.set('votes', this.get('votes') - 1);  
+  }
 });
+
+// var newComment = new Comment('yo team');
+// newComment.upvote();
+// newComment.downvote();
+// console.log(newComment.votes());
 
 /* - Backbone VIEW ------------------------------------------------------------
  * Now that we have a model, we'll want a view to display it.
@@ -46,7 +58,6 @@ var Comment = Backbone.Model.extend({
  * For example, you would re-draw a comment on the page if
  * the comment model changes.  Lets dive into how to make that happen.
  */
-
 // Views are created by extending the Backbone.View, just like models:
 var CommentView = Backbone.View.extend({
   /* Our initialize function defines methods that we want available on
@@ -121,7 +132,7 @@ var CommentView = Backbone.View.extend({
 
 /* Create a new comment model using our Comment class,
  * passing the first message as an argument: */
-var comment = new Comment('This is a message');
+var comment = new Comment('Initial message');
 
 // Create a view, and associate it with this model:
 var commentView = new CommentView({ model: comment });
@@ -137,7 +148,7 @@ var commentView = new CommentView({ model: comment });
  */
 
 // Append the view to the page. This is why we returned html from `render`:
-// $('body').append(commentView.render());
+$('body').append(commentView.render());
 
 /* The number of votes should be 0.
  * We set that as the initial default value in the comment model.
